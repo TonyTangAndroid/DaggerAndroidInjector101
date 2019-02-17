@@ -2,10 +2,10 @@ package com.microstrategy.daggerandroidinjector101;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 
 import javax.inject.Inject;
 
+import androidx.appcompat.app.AppCompatActivity;
 import dagger.Module;
 import dagger.Provides;
 import dagger.android.AndroidInjection;
