@@ -6,6 +6,7 @@ import android.os.Bundle;
 import javax.inject.Inject;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProviders;
 import dagger.Module;
 import dagger.Provides;
 import dagger.android.AndroidInjection;
@@ -15,6 +16,11 @@ public class MainActivity extends AppCompatActivity {
 
     @Inject
     SharedPreferences preferences;
+
+
+    @Inject
+    TodoViewModel todoViewModel;
+
     @Inject
     String name;
 
@@ -25,6 +31,9 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         System.out.println(preferences.contains("sf"));
         System.out.println("name length:" + name.length());
+        if (todoViewModel == null) {
+            throw new RuntimeException();
+        }
     }
 
     @Module
@@ -34,6 +43,12 @@ public class MainActivity extends AppCompatActivity {
         @Provides
         String name(MainActivity mainActivity) {
             return mainActivity.getLocalClassName();
+        }
+
+        @ActivityScope
+        @Provides
+        TodoViewModel viewModel(MainActivity mainActivity, ViewModelFactory factory) {
+            return ViewModelProviders.of(mainActivity, factory).get(TodoViewModel.class);
         }
     }
 

@@ -21,6 +21,11 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
+    api 'androidx.lifecycle:lifecycle-runtime:2.1.0-alpha02'
+    api 'androidx.lifecycle:lifecycle-extensions:2.1.0-alpha02'
+    annotationProcessor 'androidx.lifecycle:lifecycle-compiler:2.1.0-alpha02'
+
+
     implementation 'com.google.dagger:dagger:2.21'
     annotationProcessor 'com.google.dagger:dagger-compiler:2.21'
 

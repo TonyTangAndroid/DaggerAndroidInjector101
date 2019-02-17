@@ -9,6 +9,7 @@ import dagger.android.AndroidInjectionModule;
 @AppScope
 @Component(modules = {AndroidInjectionModule.class,
         MainActivity.YourActivityModule.class,
+        ViewModelModule.class,
         ContextModule.class
 })
 public interface AppComponent {
