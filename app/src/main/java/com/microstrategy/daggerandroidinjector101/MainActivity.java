@@ -6,18 +6,17 @@ import android.support.v7.app.AppCompatActivity;
 
 import javax.inject.Inject;
 
-import dagger.Binds;
 import dagger.Module;
-import dagger.Subcomponent;
+import dagger.Provides;
 import dagger.android.AndroidInjection;
-import dagger.android.AndroidInjector;
-import dagger.multibindings.ClassKey;
-import dagger.multibindings.IntoMap;
+import dagger.android.ContributesAndroidInjector;
 
 public class MainActivity extends AppCompatActivity {
 
     @Inject
     SharedPreferences preferences;
+    @Inject
+    String name;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,23 +24,23 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         System.out.println(preferences.contains("sf"));
+        System.out.println("name length:" + name.length());
     }
 
+    @Module
+    static class MainActivityModule {
 
-    @Subcomponent
-    public interface YourActivitySubcomponent extends AndroidInjector<MainActivity> {
-        @Subcomponent.Builder
-        public abstract class Builder extends AndroidInjector.Builder<MainActivity> {
+        @ActivityScope
+        @Provides
+        String name(MainActivity mainActivity) {
+            return mainActivity.getLocalClassName();
         }
     }
 
-    @Module(subcomponents = YourActivitySubcomponent.class)
-    abstract class YourActivityModule {
-        @Binds
-        @IntoMap
-        @ClassKey(MainActivity.class)
-        abstract AndroidInjector.Factory<?>
-        bindYourActivityInjectorFactory(YourActivitySubcomponent.Builder builder);
+    @Module
+    abstract static class YourActivityModule {
+        @ActivityScope
+        @ContributesAndroidInjector(modules = MainActivityModule.class)
+        abstract MainActivity contributeYourActivityInjector();
     }
-
 }
